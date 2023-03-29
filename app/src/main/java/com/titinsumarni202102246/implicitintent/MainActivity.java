@@ -34,46 +34,6 @@ public class MainActivity extends AppCompatActivity {
         smsIntent.addCategory(Intent.CATEGORY_APP_MESSAGING);
         startActivity(smsIntent);
     }
-    public void tampilKalkulator(View view) {
-        {
-            ArrayList<HashMap<String,Object>> items = new ArrayList<HashMap<String, Object>>();
-            final PackageManager pm = getPackageManager();
-
-            List<PackageInfo> packs = pm.getInstalledPackages(0);
-
-            for (PackageInfo pi : packs)
-            {
-                String packageName = pi.packageName.toString();
-                String packageName_lowerCase = packageName.toLowerCase();
-
-                if (packageName_lowerCase.contains("calcul"))
-                {
-                    HashMap<String, Object> map = new HashMap<String, Object>();
-
-                    map.put("appName", pi.applicationInfo.loadLabel(pm));
-                    map.put("packageName", pi.packageName);
-
-                    items.add(map);
-                }
-            }
-
-            int item_size = items.size();
-
-            if (item_size >= 1)
-            {
-                String packageName = (String) items.get(0).get("packageName");
-                Intent i = pm.getLaunchIntentForPackage(packageName);
-
-                if (i != null)
-                {
-                    startActivity(i);;
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(), "Tidak ditemukan aplikasi kalkulator", Toast.LENGTH_SHORT);            }
-            }
-        }
-    }
 
     public void tampilKalender(View view) {
         Intent kalenderIntent = new Intent(Intent.ACTION_MAIN);
@@ -87,8 +47,37 @@ public class MainActivity extends AppCompatActivity {
         startActivity(browserIntent);
     }
 
+    public void tampilKalkulator(View view) {
+        try {
+            Intent kalkulatorIntent = new Intent(Intent.ACTION_MAIN);
+            kalkulatorIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 
+            ComponentName cn = new ComponentName ( "com.miui.calculator", "com.miui.calculator.cal.CalculatorActivity" );
+            kalkulatorIntent.setComponent(cn);
+            kalkulatorIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(kalkulatorIntent);
+        }
+        catch (ActivityNotFoundException anfe)
+        {
+            Toast.makeText(getApplicationContext(),  "Aplikasi Kalkulator tidak ditemukan", Toast.LENGTH_LONG).show();
+        }
+    }
 
+    public void tampilDrive(View view) {
+        try {
+            Intent driveIntent = new Intent(Intent.ACTION_MAIN);
+            driveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+            ComponentName dr = new ComponentName ( "com.google.android.apps.docs", "com.google.android.apps.docs.app.NewMainProxyActivity" );
+            driveIntent.setComponent(dr);
+            driveIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(driveIntent);
+        }
+        catch (ActivityNotFoundException anfe)
+        {
+            Toast.makeText(getApplicationContext(),  "Aplikasi GoogleDrive tidak ditemukan", Toast.LENGTH_LONG).show();
+        }
+    }
 
     public void tampilKontak(View view) {
         Intent kontakIntent = new Intent(Intent.ACTION_MAIN);
